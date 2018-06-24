@@ -1,6 +1,5 @@
 package pl.sda.poznan.spring.petclinic.controller;
 
-import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -10,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.sda.poznan.spring.petclinic.model.Address;
 import pl.sda.poznan.spring.petclinic.model.Owner;
-import pl.sda.poznan.spring.petclinic.service.BaseOwnerService;
+import pl.sda.poznan.spring.petclinic.repository.OwnerRepository;
 import pl.sda.poznan.spring.petclinic.service.OwnerService;
 
 @SpringBootTest
@@ -35,8 +35,11 @@ public class OwnerControllerTest {
   @Autowired
   private OwnerController ownerController; // ta klase chcemy przetestowac
 
-  @MockBean
+  @Autowired
   private OwnerService ownerService;
+
+  @MockBean
+  private OwnerRepository ownerRepository;
 
   private MockMvc mockMvc;
 
@@ -45,7 +48,7 @@ public class OwnerControllerTest {
   @Before
   public void initOwners() {
     MockitoAnnotations.initMocks(this);
-    this.mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
+    this.mockMvc = MockMvcBuilders.standaloneSetup(ownerController, ownerService).build();
 
     owners = new ArrayList<>();
     Owner owner = new Owner();
@@ -64,7 +67,7 @@ public class OwnerControllerTest {
   @Test
   public void should_return_owner_by_id() throws Exception {
     // mockowanie wywolania metody findOwnerById(1) -> gdy będzie wywołana ta metoda to zwróć pierwszy element z listy owners
-    given(ownerService.findOwnerById(1)).willReturn(owners.get(0));
+    given(ownerRepository.findById(1L)).willReturn(Optional.empty());
 
     // wywolanie żądania
     mockMvc

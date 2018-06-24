@@ -72,7 +72,7 @@ public class OwnerControllerTest {
             get("/api/v1/owner/1")
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         .andDo(print())
-//        .andExpect(content().contentType("application/json;charset=UTF-8"))
+        .andExpect(content().contentType("application/json;charset=UTF-8"))
         .andExpect(jsonPath("$.id").value(1))
         .andExpect(jsonPath("$.firstname").value("Jan"))
         .andExpect(jsonPath("$.lastname").value("Kowalski"))

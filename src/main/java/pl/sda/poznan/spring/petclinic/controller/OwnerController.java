@@ -21,6 +21,7 @@ public class OwnerController {
 
   @GetMapping(path = "/owner/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity<Owner> getOwnerById(@PathVariable Long id) {
-    return ResponseEntity.ok().build();
+    Owner ownerById = ownerService.findOwnerById(id);
+    return ResponseEntity.ok(ownerById);
   }
 }

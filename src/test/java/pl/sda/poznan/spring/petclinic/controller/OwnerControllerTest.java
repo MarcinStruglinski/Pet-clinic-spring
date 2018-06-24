@@ -91,4 +91,10 @@ public class OwnerControllerTest {
         .andExpect(status().isNotFound());
   }
 
+  @Test
+  public void should_return_bad_request_when_id_is_not_a_number() throws Exception {
+    mockMvc.perform(get("/api/v1/owner/this-is-not-a-number"))
+        .andExpect(status().isBadRequest());
+  }
+
 }

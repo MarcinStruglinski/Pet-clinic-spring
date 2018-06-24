@@ -3,6 +3,9 @@ package pl.sda.poznan.spring.petclinic.controller;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -41,8 +44,8 @@ public class OwnerControllerTest {
 
   @Before
   public void initOwners() {
-    this.mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
     MockitoAnnotations.initMocks(this);
+    this.mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
 
     owners = new ArrayList<>();
     Owner owner = new Owner();
@@ -66,8 +69,14 @@ public class OwnerControllerTest {
     // wywolanie żądania
     mockMvc
         .perform(
-            get("/api/v1/owners/1")
+            get("/api/v1/owner/1")
                 .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andDo(print())
+//        .andExpect(content().contentType("application/json;charset=UTF-8"))
+        .andExpect(jsonPath("$.id").value(1))
+        .andExpect(jsonPath("$.firstname").value("Jan"))
+        .andExpect(jsonPath("$.lastname").value("Kowalski"))
+        .andExpect(jsonPath("$.address.country").value("Poland"))
         .andExpect(status().isOk());
   }
 

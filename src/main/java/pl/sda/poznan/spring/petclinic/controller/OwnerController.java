@@ -1,5 +1,7 @@
 package pl.sda.poznan.spring.petclinic.controller;
 
+import java.util.Collection;
+import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,5 +25,10 @@ public class OwnerController {
   public ResponseEntity<Owner> getOwnerById(@PathVariable Long id) {
     Owner ownerById = ownerService.findOwnerById(id);
     return ResponseEntity.ok(ownerById);
+  }
+
+  @GetMapping(path = "/owners", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public ResponseEntity<Collection<Owner>> getAllOwners() {
+    return ResponseEntity.ok(ownerService.findAllOwners());
   }
 }

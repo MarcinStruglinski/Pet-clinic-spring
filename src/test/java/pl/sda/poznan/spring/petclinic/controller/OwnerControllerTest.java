@@ -1,6 +1,7 @@
 package pl.sda.poznan.spring.petclinic.controller;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -62,6 +63,18 @@ public class OwnerControllerTest {
     address.setPostalcode("61-229");
     owner.setAddress(address);
     owners.add(owner);
+
+    owner = new Owner();
+    owner.setId(2L);
+    owner.setFirstname("Adam");
+    owner.setLastname("Adamiak");
+    address = new Address();
+    address.setCity("Wrocław");
+    address.setCountry("Poland");
+    address.setStreet("Bałtycka");
+    address.setPostalcode("61-229");
+    owner.setAddress(address);
+    owners.add(owner);
   }
 
   @Test
@@ -95,6 +108,25 @@ public class OwnerControllerTest {
   public void should_return_bad_request_when_id_is_not_a_number() throws Exception {
     mockMvc.perform(get("/api/v1/owner/this-is-not-a-number"))
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void should_return_list_of_owners() throws Exception {
+    given(ownerService.findAllOwners()).willReturn(owners);
+    mockMvc.perform(
+        get("/api/v1/owners")
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.length()").value(2))
+        .andExpect(jsonPath("$[0].id").value(1))
+        .andExpect(jsonPath("$[0].firstname").value("Jan"))
+        .andExpect(jsonPath("$[0].lastname").value("Kowalski"))
+        .andExpect(jsonPath("$[0].address.country").value("Poland"))
+        .andExpect(jsonPath("$[1].id").value(2))
+        .andExpect(jsonPath("$[1].firstname").value("Adam"))
+        .andExpect(jsonPath("$[1].lastname").value("Adamiak"))
+        .andExpect(jsonPath("$[1].address.city").value("Wrocław"));
   }
 
 }

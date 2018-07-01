@@ -6,9 +6,12 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +20,7 @@ import pl.sda.poznan.spring.petclinic.service.OwnerService;
 
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin(exposedHeaders = "errors, content-type")
 public class OwnerController {
 
   private final OwnerService ownerService;
@@ -24,6 +28,7 @@ public class OwnerController {
   public OwnerController(OwnerService ownerService) {
     this.ownerService = ownerService;
   }
+
 
   @GetMapping(path = "/owner/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity<Owner> getOwnerById(@PathVariable Long id) {
@@ -41,4 +46,19 @@ public class OwnerController {
     this.ownerService.saveOwner(owner);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
+
+  //todo: Zaimplementuj aktualizacje ownera i jego kasowanie
+  @PutMapping(path = "/owner", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public ResponseEntity<Owner> updateOwner(@RequestBody @Valid Owner owner,
+      BindingResult bindingResult) {
+    // moduł walidacji springa umieści błędy w obiekcie binding result
+    if (bindingResult.hasErrors()) {
+      return ResponseEntity.badRequest().build();
+    }
+    ownerService.update(owner);
+    return ResponseEntity.ok(owner);
+  }
+
+
+
 }

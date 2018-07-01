@@ -1,6 +1,8 @@
 package pl.sda.poznan.spring.petclinic.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import pl.sda.poznan.spring.petclinic.exception.OwnerNotFoundException;
@@ -33,16 +35,28 @@ public class BaseOwnerService implements OwnerService {
 
   @Override
   public Collection<Owner> findAllOwners() {
-    return null;
+    Iterable<Owner> all = this.ownerRepository.findAll();
+    List<Owner> ownerList = new ArrayList<>();
+    all.forEach(ownerList::add);
+    return ownerList;
   }
 
   @Override
   public void saveOwner(Owner owner) {
-
+    this.ownerRepository.save(owner);
   }
 
   @Override
   public Collection<Owner> findOwnerByLastname(String lastname) {
     return null;
   }
+
+  @Override
+  public void update(Owner owner) {
+    if (owner.getId() == null || !this.ownerRepository.existsById(owner.getId())) {
+      throw new OwnerNotFoundException();
+    }
+    this.ownerRepository.save(owner);
+  }
+
 }

@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(entryPoint)
                 .and()
                 .formLogin()
-                .usernameParameter("username")
+                .usernameParameter("email")
                 .passwordParameter("password")
                 .loginProcessingUrl("/api/v1/authenticate")
                 .successHandler(successHandler)

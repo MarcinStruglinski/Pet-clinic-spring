@@ -15,6 +15,9 @@ import pl.sda.poznan.spring.petclinic.service.ApplicationUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final ApplicationUserDetailsService applicationUserDetailsService;
+    private final RestAuthenticationEntryPoint entryPoint;
+    private final RestLoginSuccessHandler successHandler;
+    private final RestLoginFailureHandler failureHandler;
 
 
     @Bean
@@ -35,19 +38,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/v1/register").permitAll()
-//                .antMatchers("/").permitAll()
-//                .antMatchers("/contact").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(entryPoint)
+                .and()
                 .formLogin()
-                .permitAll()
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .loginProcessingUrl("/api/v1/authenticate")
+                .successHandler(successHandler)
+                .failureHandler(failureHandler)
                 .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/contact")
+                .logoutUrl("/api/v1/logout")
+                .logoutSuccessHandler((request, response, authentication) -> response.setStatus(200))
                 .and()
                 .headers().frameOptions().disable()
-                .and().csrf().disable();
+                .and()
+                .csrf().disable();
     }
 }

@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class ApplicationUser {
@@ -24,6 +27,8 @@ public class ApplicationUser {
         this.id = id;
     }
 
+    @NotNull
+    @Size(min = 3, max = 15, message = "First name should be between 3 and 15 characters long")
     public String getFirstName() {
         return firstName;
     }
@@ -32,6 +37,8 @@ public class ApplicationUser {
         this.firstName = firstName;
     }
 
+    @NotNull
+    @Size(min = 3, max = 15, message = "Last name should be between 3 and 15 characters long")
     public String getLastName() {
         return lastName;
     }
@@ -40,6 +47,8 @@ public class ApplicationUser {
         this.lastName = lastName;
     }
 
+    @NotNull
+    @Email(message = "Field should contains valid email address")
     public String getEmail() {
         return email;
     }
@@ -48,6 +57,8 @@ public class ApplicationUser {
         this.email = email;
     }
 
+    @NotNull
+    @Size(min = 8, message = "Password should be at least 8 characters long")
     public String getPassword() {
         return password;
     }

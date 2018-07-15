@@ -16,6 +16,7 @@ import java.util.Arrays;
 @Service
 @RequiredArgsConstructor
 public class ApplicationUserDetailsService implements UserDetailsService {
+
     private final ApplicationUserRepository applicationUserRepository;
 
 

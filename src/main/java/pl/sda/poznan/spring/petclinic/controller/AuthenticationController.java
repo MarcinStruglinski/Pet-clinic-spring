@@ -3,19 +3,14 @@ package pl.sda.poznan.spring.petclinic.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.sda.poznan.spring.petclinic.dto.ApplicationUserDto;
-import pl.sda.poznan.spring.petclinic.exception.ApplicationUserNotFoundException;
 import pl.sda.poznan.spring.petclinic.model.ApplicationUser;
-import pl.sda.poznan.spring.petclinic.repository.ApplicationUserRepository;
-import pl.sda.poznan.spring.petclinic.service.ApplicationUserDetailsService;
 import pl.sda.poznan.spring.petclinic.service.AuthenticationService;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")

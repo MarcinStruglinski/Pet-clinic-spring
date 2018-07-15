@@ -9,8 +9,6 @@ import pl.sda.poznan.spring.petclinic.exception.ApplicationUserNotFoundException
 import pl.sda.poznan.spring.petclinic.model.ApplicationUser;
 import pl.sda.poznan.spring.petclinic.repository.ApplicationUserRepository;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -24,9 +22,10 @@ public class AuthenticationService {
         this.applicationUserRepository.save(applicationUser);
     }
 
-    public ApplicationUserDto getUserData(String email){
-        Optional<ApplicationUser> optionalUser = applicationUserRepository.findByEmail(email);
-        ApplicationUser applicationUser = optionalUser.orElseThrow(ApplicationUserNotFoundException::new);
-        return conversionService.convert(applicationUser, ApplicationUserDto.class);
+    public ApplicationUserDto getUserData(String email) {
+        return applicationUserRepository
+                .findByEmail(email)
+                .map(user -> conversionService.convert(user, ApplicationUserDto.class))
+                .orElseThrow(ApplicationUserNotFoundException::new);
     }
 }

@@ -28,7 +28,7 @@ public class ApplicationUser {
     }
 
     @NotNull
-    @Size(min = 3, max = 15, message = "First name should be between 3 and 15 characters long")
+    @Size(min = 2, max = 255, message = "First name should be between 3 and 15 characters long")
     public String getFirstName() {
         return firstName;
     }
@@ -38,7 +38,7 @@ public class ApplicationUser {
     }
 
     @NotNull
-    @Size(min = 3, max = 15, message = "Last name should be between 3 and 15 characters long")
+    @Size(min = 2, max = 255, message = "Last name should be between 3 and 15 characters long")
     public String getLastName() {
         return lastName;
     }
@@ -48,7 +48,7 @@ public class ApplicationUser {
     }
 
     @NotNull
-    @Email(message = "Field should contains valid email address")
+    @Email(message = "Field should contain valid email address")
     public String getEmail() {
         return email;
     }

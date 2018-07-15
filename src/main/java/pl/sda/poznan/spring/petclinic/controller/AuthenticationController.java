@@ -33,7 +33,7 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @RequestMapping(value = "/email", method = RequestMethod.GET)
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
     public ResponseEntity<ApplicationUserDto> currentUserName(Principal principal) {
         String email = principal.getName();
         ApplicationUserDto userDto = authenticationService.getUserData(email);

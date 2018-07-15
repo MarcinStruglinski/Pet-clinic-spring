@@ -1,2 +1,9 @@
 language: java
 jdk: oraclejdk8
+deploy:
+  provider: heroku
+  api_key:
+    secure: LfykRzlmOIlOwKuCXSnvsYGYCdggm34r9Uh6qgMO5iUrzCEo5Z1Owp2GjL7NMVYxmlnSs200cy2JFUKbAs1B2qtTcaehFoXMpyUdAUrQwXGHe1CBlsCwiTo02Fl1jLpePdAWnUFJA/MRxK667EJ+R45yDxyCf7u79NN6TFGLRaxvgCHTt/BPWXZ+XUfXwCfZwxY0vGupHBq1MIcLQPwqk4Cs6rcb6DdOlREBhkUeBxsf1mdTlDYvoHpRQ3kxncu06gNIoAHLrrpzVXOeYaw10LQv8GDLR7Vl+qOtE+PtMuVinygQ875hln+WKcgLncufMRbGh7VsH5EcJOCtcJh+jY9TgkpYD3IbRyd86CFMXWYsvmE1knrJaILjfdmpIb4cZXmPcGucV1MIh0LhJlf+IRXW//99UlIRtQeAReJsrEePvMq+/lmDs8wQ4Aj82Fn735JwFZx37VXZl/fRUFVXBVCocjY1jKZ35SxB0u9892gNT8KnF2cWl014X8mpOXvOskRjhOWgqSvE11AImEMsah8MJCNCMzIIfcmryeMWkH4ohQ/4Fg4nbcfgGJPE+dsEweqkv02bsNT6+NGDpGPIbzza+lk2pd3a+ElprxJB4M6Jr0VHjw+7cdbyP248LAvzfKGEt9v1Iz2MezMIrfiBEz9b3YfR82fBjlAwacAXisc=
+  app: sda-javapoz6-spring-pet-clinic
+  on:
+    repo: piotrsiwinski/sda-javapoz6-spring-pet-clinic

@@ -21,38 +21,14 @@ public class ApplicationUserToApplicationUserDtoConverterTest {
     }
 
     @Test
-    public void shouldHaveSameIdAfterConversion() {
+    public void shouldHaveSameParametersAfterConversion() {
         //When
         ApplicationUserDto applicationUserDto = new ApplicationUserToApplicationUserDtoConverter().convert(applicationUser);
 
         //Then
         assertEquals("Converted user has invalid id", applicationUser.getId(), applicationUserDto.getId());
-    }
-
-    @Test
-    public void shouldHaveSameEmailAfterConversion() {
-        //When
-        ApplicationUserDto applicationUserDto = new ApplicationUserToApplicationUserDtoConverter().convert(applicationUser);
-
-        //Then
         assertEquals("Converted user has invalid email", applicationUser.getEmail(), applicationUserDto.getEmail());
-    }
-
-    @Test
-    public void shouldHaveSameFirstnameAfterConversion() {
-        //When
-        ApplicationUserDto applicationUserDto = new ApplicationUserToApplicationUserDtoConverter().convert(applicationUser);
-
-        //Then
         assertEquals("Converted user has invalid firstname", applicationUser.getFirstName(), applicationUserDto.getFirstName());
-    }
-
-    @Test
-    public void shouldHaveSameLastnameAfterConversion() {
-        //When
-        ApplicationUserDto applicationUserDto = new ApplicationUserToApplicationUserDtoConverter().convert(applicationUser);
-
-        //Then
         assertEquals("Converted user has invalid lastname", applicationUser.getLastName(), applicationUserDto.getLastName());
     }
 }

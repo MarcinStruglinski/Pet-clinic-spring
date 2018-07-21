@@ -19,9 +19,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthenticationController {
-
     private final AuthenticationService authenticationService;
-
 
     @PostMapping("/register")
     public ResponseEntity registerUser(
@@ -41,7 +39,6 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-
     @RequestMapping(value = "/account", method = RequestMethod.GET)
     public ResponseEntity<ApplicationUserDto> currentUserName(Principal principal) {
         String email = principal.getName();
@@ -53,7 +50,5 @@ public class AuthenticationController {
     public ResponseEntity confirmRegistration(@PathVariable String token) {
         authenticationService.activateUserDataByToken(token);
         return ResponseEntity.status(HttpStatus.OK).build();
-
-
     }
 }

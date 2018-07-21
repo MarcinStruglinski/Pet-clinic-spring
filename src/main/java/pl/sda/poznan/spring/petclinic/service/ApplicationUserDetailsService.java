@@ -19,7 +19,6 @@ public class ApplicationUserDetailsService implements UserDetailsService {
 
     private final ApplicationUserRepository applicationUserRepository;
 
-
     @Override
     public UserDetails loadUserByUsername(String email) {
         ApplicationUser applicationUser = applicationUserRepository
@@ -37,8 +36,4 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         GrantedAuthority ga = new SimpleGrantedAuthority("USER");
         return new User(applicationUser.getEmail(), applicationUser.getPassword(), Arrays.asList(ga));
     }
-
-
-
-
 }

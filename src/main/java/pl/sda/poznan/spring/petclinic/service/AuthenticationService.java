@@ -11,6 +11,7 @@ import pl.sda.poznan.spring.petclinic.exception.RegisterFailureException;
 import pl.sda.poznan.spring.petclinic.model.ApplicationUser;
 import pl.sda.poznan.spring.petclinic.repository.ApplicationUserRepository;
 
+import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -34,10 +35,8 @@ public class AuthenticationService {
             MessageDigest md = java.security.MessageDigest.getInstance("MD5");
             byte[] array = md.digest(md5.getBytes());
             StringBuilder sb = new StringBuilder();
-            for (byte aByte : array) {
-                sb.append(Integer.toHexString((aByte & 0xFF) | 0x100).substring(1, 3));
-            }
-            return sb.toString();
+            return DatatypeConverter
+                    .printHexBinary(array).toLowerCase();
         } catch (NoSuchAlgorithmException e) {
             throw new RegisterFailureException();
         }

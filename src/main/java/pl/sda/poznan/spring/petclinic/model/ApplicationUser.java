@@ -16,10 +16,8 @@ public class ApplicationUser {
     private String lastName;
     private String email;
     private String password;
-
     private boolean activated;
     private String activationHash;
-
 
     public boolean isActivated() {
         return activated;

@@ -22,10 +22,9 @@ public class CorsFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
     final String origin = "http://localhost:4200";
     response.addHeader("Access-Control-Allow-Origin", origin);
-    response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+    response.setHeader("Access-Control-Allow-Methods", "*");
     response.setHeader("Access-Control-Allow-Credentials", "true");
-    response.setHeader("Access-Control-Allow-Headers",
-        "content-type, x-gwt-module-base, x-gwt-permutation, clientid, longpush, Set-Cookie, withCredentials");
+    response.setHeader("Access-Control-Allow-Headers", "*");
     filterChain.doFilter(request, response);
   }
 }

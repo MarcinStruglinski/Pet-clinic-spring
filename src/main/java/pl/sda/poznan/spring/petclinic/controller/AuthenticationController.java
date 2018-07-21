@@ -51,7 +51,7 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/activate/{token}", method = RequestMethod.GET)
     public ResponseEntity confirmRegistration(@PathVariable String token) {
-        ApplicationUser activateuser = authenticationService.ActivateUserDataByToken(token);
+        authenticationService.activateUserDataByToken(token);
         return ResponseEntity.status(HttpStatus.OK).build();
 
 

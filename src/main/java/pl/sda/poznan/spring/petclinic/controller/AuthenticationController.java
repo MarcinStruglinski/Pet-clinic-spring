@@ -1,19 +1,19 @@
 package pl.sda.poznan.spring.petclinic.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 import pl.sda.poznan.spring.petclinic.dto.ApplicationUserDto;
 import pl.sda.poznan.spring.petclinic.model.ApplicationUser;
 import pl.sda.poznan.spring.petclinic.service.AuthenticationService;
 
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -28,9 +28,13 @@ public class AuthenticationController {
             @RequestBody
             @Valid
                     ApplicationUser applicationUser,
-            BindingResult bindingResult) throws UnsupportedEncodingException {
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().build();
+            List<String> errors = bindingResult.getAllErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(errors);
         }
 
         authenticationService.saveUser(applicationUser);
@@ -45,18 +49,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(userDto);
     }
 
-
     @RequestMapping(value = "/activate/{token}", method = RequestMethod.GET)
-    public ResponseEntity confirmRegistration (@PathVariable String token) {
+    public ResponseEntity confirmRegistration(@PathVariable String token) {
         ApplicationUser activateuser = authenticationService.ActivateUserDataByToken(token);
         return ResponseEntity.status(HttpStatus.OK).build();
 
 
     }
-
 }
-
-
-
-
-

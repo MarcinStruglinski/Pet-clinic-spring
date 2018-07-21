@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CsrfFilter;
 import pl.sda.poznan.spring.petclinic.service.ApplicationUserDetailsService;
 
 @EnableWebSecurity
@@ -18,6 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final RestAuthenticationEntryPoint entryPoint;
     private final RestLoginSuccessHandler successHandler;
     private final RestLoginFailureHandler failureHandler;
+    private final CorsFilter corsFilter;
 
 
     @Bean
@@ -60,6 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .headers().frameOptions().disable()
                 .and()
-                .csrf().disable();
+                .csrf().disable().addFilterBefore(corsFilter, CsrfFilter.class);
     }
 }

@@ -11,6 +11,4 @@ public class ApplicationUserDto {
     private String firstName;
     private String lastName;
     private String email;
-    private boolean activated;
-    private String activationHash;
 }

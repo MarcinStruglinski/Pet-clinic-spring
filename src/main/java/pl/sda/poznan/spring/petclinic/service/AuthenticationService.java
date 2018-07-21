@@ -5,6 +5,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sda.poznan.spring.petclinic.dto.ApplicationUserDto;
+import pl.sda.poznan.spring.petclinic.exception.ApplicationUserNotFoundException;
 import pl.sda.poznan.spring.petclinic.exception.ApplicationUserIsActiveException;
 import pl.sda.poznan.spring.petclinic.exception.ApplicationUserNotFoundException;
 import pl.sda.poznan.spring.petclinic.model.ApplicationUser;
@@ -14,28 +15,12 @@ import java.io.UnsupportedEncodingException;
 
 @Service
 @RequiredArgsConstructor
-
-
-
-
-
-
-
-
-
 public class AuthenticationService {
-
-
-
-
-
     private final ApplicationUserRepository applicationUserRepository;
-    private final PasswordEncoder passwordEncoder;
     private final ConversionService conversionService;
+    private final PasswordEncoder passwordEncoder;
 
-
-
-    public void saveUser(ApplicationUser applicationUser) throws UnsupportedEncodingException {
+    public void saveUser(ApplicationUser applicationUser) {
         String encodedPassword = passwordEncoder.encode(applicationUser.getPassword());
         applicationUser.setPassword(encodedPassword);
         applicationUser.setActivationHash(GenerateMd5HashCode(applicationUser.getEmail()));
@@ -56,6 +41,13 @@ public class AuthenticationService {
         } catch (java.security.NoSuchAlgorithmException e) {
         }
         return null;
+    }
+
+    public ApplicationUserDto getUserData(String email) {
+        return applicationUserRepository
+                .findByEmail(email)
+                .map(user -> conversionService.convert(user, ApplicationUserDto.class))
+                .orElseThrow(ApplicationUserNotFoundException::new);
     }
 
 

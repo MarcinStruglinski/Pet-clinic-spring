@@ -13,6 +13,7 @@ public class ApplicationUserToApplicationUserDtoConverter implements Converter<A
         applicationUserDto.setFirstName(applicationUser.getFirstName());
         applicationUserDto.setLastName(applicationUser.getLastName());
         applicationUserDto.setEmail(applicationUser.getEmail());
+
         return applicationUserDto;
     }
 }

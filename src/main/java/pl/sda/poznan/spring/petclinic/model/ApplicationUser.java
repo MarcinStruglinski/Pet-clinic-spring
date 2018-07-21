@@ -14,6 +14,26 @@ public class ApplicationUser {
     private String email;
     private String password;
 
+    private boolean activated;
+    private String activationHash;
+
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    public String getActivationHash() {
+        return activationHash;
+    }
+
+    public void setActivationHash(String activationHash) {
+        this.activationHash = activationHash;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {

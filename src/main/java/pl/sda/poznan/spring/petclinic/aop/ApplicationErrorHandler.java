@@ -3,8 +3,10 @@ package pl.sda.poznan.spring.petclinic.aop;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import pl.sda.poznan.spring.petclinic.exception.ApplicationUserNotFoundException;
 import pl.sda.poznan.spring.petclinic.exception.OwnerNotFoundException;
+import pl.sda.poznan.spring.petclinic.exception.ApplicationUserIsActiveException;
 
 @ControllerAdvice
 public class ApplicationErrorHandler {
@@ -23,4 +25,11 @@ public class ApplicationErrorHandler {
     public ResponseEntity handleApplicationUserNotFoundException() {
         return ResponseEntity.notFound().build();
     }
+
+    @ExceptionHandler(ApplicationUserIsActiveException.class)
+    public ResponseEntity handleApplicationUserIsActiveException() {
+        return ResponseEntity.badRequest().build();
+    }
+
+
 }

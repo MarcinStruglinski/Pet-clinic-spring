@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sda.poznan.spring.petclinic.dto.ApplicationUserDto;
 import pl.sda.poznan.spring.petclinic.exception.ApplicationUserNotFoundException;
+import pl.sda.poznan.spring.petclinic.exception.EmailAlreadyRegisteredException;
 import pl.sda.poznan.spring.petclinic.exception.ApplicationUserIsActiveException;
 import pl.sda.poznan.spring.petclinic.exception.RegisterFailureException;
 import pl.sda.poznan.spring.petclinic.model.ApplicationUser;
@@ -22,12 +23,15 @@ public class AuthenticationService {
   private final ConversionService conversionService;
   private final PasswordEncoder passwordEncoder;
 
-  public void saveUser(ApplicationUser applicationUser) {
-    String encodedPassword = passwordEncoder.encode(applicationUser.getPassword());
-    applicationUser.setPassword(encodedPassword);
-    applicationUser.setActivationHash(generateMd5HashCode(applicationUser.getEmail()));
-    this.applicationUserRepository.save(applicationUser);
-  }
+    public void saveUser(ApplicationUser applicationUser) {
+        String encodedPassword = passwordEncoder.encode(applicationUser.getPassword());
+        applicationUser.setPassword(encodedPassword);
+        applicationUser.setActivationHash(generateMd5HashCode(applicationUser.getEmail()));
+        if (applicationUserRepository.existsByEmail(applicationUser.getEmail()))
+            throw new EmailAlreadyRegisteredException();
+
+        this.applicationUserRepository.save(applicationUser);
+    }
 
   private String generateMd5HashCode(String md5) {
     try {

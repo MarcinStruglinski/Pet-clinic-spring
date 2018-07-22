@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sda.poznan.spring.petclinic.dto.ApplicationUserDto;
 import pl.sda.poznan.spring.petclinic.exception.ApplicationUserNotFoundException;
+import pl.sda.poznan.spring.petclinic.exception.EmailAlreadyRegisteredException;
 import pl.sda.poznan.spring.petclinic.model.ApplicationUser;
 import pl.sda.poznan.spring.petclinic.repository.ApplicationUserRepository;
 
@@ -19,6 +20,10 @@ public class AuthenticationService {
     public void saveUser(ApplicationUser applicationUser) {
         String encodedPassword = passwordEncoder.encode(applicationUser.getPassword());
         applicationUser.setPassword(encodedPassword);
+
+        if (applicationUserRepository.existsByEmail(applicationUser.getEmail()))
+            throw new EmailAlreadyRegisteredException();
+
         this.applicationUserRepository.save(applicationUser);
     }
 

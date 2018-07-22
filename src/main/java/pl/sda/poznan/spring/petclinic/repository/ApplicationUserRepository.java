@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ApplicationUserRepository extends CrudRepository<ApplicationUser, Long> {
     Optional<ApplicationUser> findByEmail(String email);
     boolean existsByEmail(String email);
+    Optional<ApplicationUser> findByactivationHash(String token);
 }

@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthenticationController {
-
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
@@ -45,5 +44,11 @@ public class AuthenticationController {
         String email = principal.getName();
         ApplicationUserDto userDto = authenticationService.getUserData(email);
         return ResponseEntity.ok(userDto);
+    }
+
+    @RequestMapping(value = "/activate/{token}", method = RequestMethod.GET)
+    public ResponseEntity confirmRegistration(@PathVariable String token) {
+        authenticationService.activateUserDataByToken(token);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

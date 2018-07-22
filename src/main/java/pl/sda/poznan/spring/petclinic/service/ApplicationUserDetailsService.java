@@ -19,11 +19,18 @@ public class ApplicationUserDetailsService implements UserDetailsService {
 
     private final ApplicationUserRepository applicationUserRepository;
 
-
     @Override
     public UserDetails loadUserByUsername(String email) {
         ApplicationUser applicationUser = applicationUserRepository
                 .findByEmail(email)
+                .orElseThrow(ApplicationUserNotFoundException::new);
+        //todo: Create roles entity and map user roles from db
+        GrantedAuthority ga = new SimpleGrantedAuthority("USER");
+        return new User(applicationUser.getEmail(), applicationUser.getPassword(), Arrays.asList(ga));
+    }
+
+    public UserDetails loadUserByActivationHash(String token) {
+        ApplicationUser applicationUser = applicationUserRepository.findByactivationHash(token)
                 .orElseThrow(ApplicationUserNotFoundException::new);
         //todo: Create roles entity and map user roles from db
         GrantedAuthority ga = new SimpleGrantedAuthority("USER");

@@ -61,6 +61,7 @@ public class AuthenticationService {
       throw new ApplicationUserIsActiveException();
     }
     applicationUser.setActivated(true);
+    applicationUser.setActivationHash(null);
     applicationUserRepository.save(applicationUser);
   }
 

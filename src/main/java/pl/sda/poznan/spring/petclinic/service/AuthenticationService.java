@@ -24,24 +24,14 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
 
     public void saveUser(ApplicationUser applicationUser) {
+        if (applicationUserRepository.existsByEmail(applicationUser.getEmail())){
+            throw new EmailAlreadyRegisteredException();
+        }
         String encodedPassword = passwordEncoder.encode(applicationUser.getPassword());
         applicationUser.setPassword(encodedPassword);
         applicationUser.setActivationHash(generateMd5HashCode(applicationUser.getEmail()));
-        if (applicationUserRepository.existsByEmail(applicationUser.getEmail()))
-            throw new EmailAlreadyRegisteredException();
-
         this.applicationUserRepository.save(applicationUser);
     }
-
-  private String generateMd5HashCode(String md5) {
-    try {
-      MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-      byte[] array = md.digest(md5.getBytes());
-      return DatatypeConverter.printHexBinary(array).toLowerCase();
-    } catch (NoSuchAlgorithmException e) {
-      throw new RegisterFailureException();
-    }
-  }
 
   public ApplicationUserDto getUserData(String email) {
     return applicationUserRepository
@@ -61,4 +51,14 @@ public class AuthenticationService {
     applicationUser.setActivated(true);
     applicationUserRepository.save(applicationUser);
   }
+
+    private String generateMd5HashCode(String md5) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(md5.getBytes());
+            return DatatypeConverter.printHexBinary(array).toLowerCase();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RegisterFailureException();
+        }
+    }
 }

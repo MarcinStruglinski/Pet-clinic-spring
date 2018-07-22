@@ -23,7 +23,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private final RestLoginSuccessHandler successHandler;
   private final RestLoginFailureHandler failureHandler;
 
-
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder(12);
@@ -31,17 +30,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth
-        .userDetailsService(applicationUserDetailsService)
-        .passwordEncoder(passwordEncoder());
+    auth.userDetailsService(applicationUserDetailsService).passwordEncoder(passwordEncoder());
   }
-
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
-        .antMatchers("/h2-console/**").permitAll()
-        .antMatchers("/api/v1/register").permitAll()
+        .antMatchers("/h2-console/**")
+        .permitAll()
+        .antMatchers("/api/v1/register")
+        .permitAll()
         .anyRequest()
         .authenticated()
         .and()
@@ -59,9 +57,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .logoutUrl("/api/v1/logout")
         .logoutSuccessHandler((request, response, authentication) -> response.setStatus(200))
         .and()
-        .headers().frameOptions().disable()
+        .headers()
+        .frameOptions()
+        .disable()
         .and()
-        .csrf().disable().addFilterBefore(corsFilter(), CsrfFilter.class);
+        .csrf()
+        .disable()
+        .addFilterBefore(corsFilter(), CsrfFilter.class);
   }
 
   @Bean

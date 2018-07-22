@@ -35,11 +35,9 @@ import pl.sda.poznan.spring.petclinic.service.OwnerService;
 @WebAppConfiguration
 public class OwnerControllerTest {
 
-  @Autowired
-  private OwnerController ownerController; // ta klase chcemy przetestowac
+  @Autowired private OwnerController ownerController; // ta klase chcemy przetestowac
 
-  @MockBean
-  private OwnerService ownerService;
+  @MockBean private OwnerService ownerService;
 
   private MockMvc mockMvc;
 
@@ -48,9 +46,10 @@ public class OwnerControllerTest {
   @Before
   public void initOwners() {
     MockitoAnnotations.initMocks(this);
-    this.mockMvc = MockMvcBuilders.standaloneSetup(ownerController)
-        .setControllerAdvice(new ApplicationErrorHandler())
-        .build();
+    this.mockMvc =
+        MockMvcBuilders.standaloneSetup(ownerController)
+            .setControllerAdvice(new ApplicationErrorHandler())
+            .build();
 
     owners = new ArrayList<>();
     Owner owner = new Owner();
@@ -80,14 +79,13 @@ public class OwnerControllerTest {
 
   @Test
   public void should_return_owner_by_id() throws Exception {
-    // mockowanie wywolania metody findOwnerById(1) -> gdy będzie wywołana ta metoda to zwróć pierwszy element z listy owners
+    // mockowanie wywolania metody findOwnerById(1) -> gdy będzie wywołana ta metoda to zwróć
+    // pierwszy element z listy owners
     given(ownerService.findOwnerById(1)).willReturn(owners.get(0));
 
     // wywolanie żądania
     mockMvc
-        .perform(
-            get("/api/v1/owner/1")
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .perform(get("/api/v1/owner/1").accept(MediaType.APPLICATION_JSON_VALUE))
         .andDo(print())
         .andExpect(content().contentType("application/json;charset=UTF-8"))
         .andExpect(jsonPath("$.id").value(1))
@@ -100,23 +98,19 @@ public class OwnerControllerTest {
   @Test
   public void should_return_error_when_owner_not_found() throws Exception {
     given(ownerService.findOwnerById(Mockito.anyLong())).willThrow(OwnerNotFoundException.class);
-    mockMvc
-        .perform(get("/api/v1/owner/21"))
-        .andExpect(status().isNotFound());
+    mockMvc.perform(get("/api/v1/owner/21")).andExpect(status().isNotFound());
   }
 
   @Test
   public void should_return_bad_request_when_id_is_not_a_number() throws Exception {
-    mockMvc.perform(get("/api/v1/owner/this-is-not-a-number"))
-        .andExpect(status().isBadRequest());
+    mockMvc.perform(get("/api/v1/owner/this-is-not-a-number")).andExpect(status().isBadRequest());
   }
 
   @Test
   public void should_return_list_of_owners() throws Exception {
     given(ownerService.findAllOwners()).willReturn(owners);
-    mockMvc.perform(
-        get("/api/v1/owners")
-            .accept(MediaType.APPLICATION_JSON_VALUE))
+    mockMvc
+        .perform(get("/api/v1/owners").accept(MediaType.APPLICATION_JSON_VALUE))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.length()").value(2))
@@ -144,5 +138,4 @@ public class OwnerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         .andExpect(status().isCreated());
   }
-
 }

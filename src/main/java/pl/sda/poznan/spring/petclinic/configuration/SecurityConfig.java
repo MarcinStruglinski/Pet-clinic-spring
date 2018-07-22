@@ -70,14 +70,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   public CorsFilter corsFilter() {
+    String allowedOrigin =
+        "http://sda-javapoz6-angular-test-bucket.s3-website.eu-central-1.amazonaws.com";
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
-    config.addAllowedOrigin("http://localhost:4200");
+    config.addAllowedOrigin(allowedOrigin);
     config.addAllowedMethod(CorsConfiguration.ALL);
     config.addAllowedHeader(CorsConfiguration.ALL);
     config.setAllowCredentials(true);
-    source.registerCorsConfiguration("/api/**", config);
-
+    source.registerCorsConfiguration("/**", config);
     return new CorsFilter(source);
   }
 }

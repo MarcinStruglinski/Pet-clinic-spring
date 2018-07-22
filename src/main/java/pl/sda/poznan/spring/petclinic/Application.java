@@ -1,4 +1,5 @@
 package pl.sda.poznan.spring.petclinic;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

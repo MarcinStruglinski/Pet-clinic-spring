@@ -45,7 +45,6 @@ public class Owner {
     this.lastname = lastname;
   }
 
-
   public Address getAddress() {
     return address;
   }

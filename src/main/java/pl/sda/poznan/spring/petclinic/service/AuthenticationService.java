@@ -18,47 +18,43 @@ import java.security.NoSuchAlgorithmException;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final ApplicationUserRepository applicationUserRepository;
-    private final ConversionService conversionService;
-    private final PasswordEncoder passwordEncoder;
+  private final ApplicationUserRepository applicationUserRepository;
+  private final ConversionService conversionService;
+  private final PasswordEncoder passwordEncoder;
 
-    public void saveUser(ApplicationUser applicationUser) {
-        String encodedPassword = passwordEncoder.encode(applicationUser.getPassword());
-        applicationUser.setPassword(encodedPassword);
-        applicationUser.setActivationHash(generateMd5HashCode(applicationUser.getEmail()));
-        this.applicationUserRepository.save(applicationUser);
+  public void saveUser(ApplicationUser applicationUser) {
+    String encodedPassword = passwordEncoder.encode(applicationUser.getPassword());
+    applicationUser.setPassword(encodedPassword);
+    applicationUser.setActivationHash(generateMd5HashCode(applicationUser.getEmail()));
+    this.applicationUserRepository.save(applicationUser);
+  }
+
+  private String generateMd5HashCode(String md5) {
+    try {
+      MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+      byte[] array = md.digest(md5.getBytes());
+      return DatatypeConverter.printHexBinary(array).toLowerCase();
+    } catch (NoSuchAlgorithmException e) {
+      throw new RegisterFailureException();
     }
+  }
 
+  public ApplicationUserDto getUserData(String email) {
+    return applicationUserRepository
+        .findByEmail(email)
+        .map(user -> conversionService.convert(user, ApplicationUserDto.class))
+        .orElseThrow(ApplicationUserNotFoundException::new);
+  }
 
-    private String generateMd5HashCode(String md5) {
-        try {
-            MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(md5.getBytes());
-            StringBuilder sb = new StringBuilder();
-            return DatatypeConverter
-                    .printHexBinary(array).toLowerCase();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RegisterFailureException();
-        }
+  public void activateUserDataByToken(String token) {
+    ApplicationUser applicationUser =
+        applicationUserRepository
+            .findByactivationHash(token)
+            .orElseThrow(ApplicationUserNotFoundException::new);
+    if (applicationUser.isActivated()) {
+      throw new ApplicationUserIsActiveException();
     }
-
-    public ApplicationUserDto getUserData(String email) {
-        return applicationUserRepository
-                .findByEmail(email)
-                .map(user -> conversionService.convert(user, ApplicationUserDto.class))
-                .orElseThrow(ApplicationUserNotFoundException::new);
-    }
-
-    public void activateUserDataByToken(String token) {
-        ApplicationUser applicationUser = applicationUserRepository
-                .findByactivationHash(token)
-                .orElseThrow(ApplicationUserNotFoundException::new);
-        if (applicationUser.isActivated()) {
-            throw new ApplicationUserIsActiveException();
-        }
-        applicationUser.setActivated(true);
-        applicationUserRepository.save(applicationUser);
-    }
-
-
+    applicationUser.setActivated(true);
+    applicationUserRepository.save(applicationUser);
+  }
 }

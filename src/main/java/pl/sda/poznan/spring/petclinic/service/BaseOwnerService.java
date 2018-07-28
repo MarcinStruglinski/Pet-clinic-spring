@@ -58,5 +58,4 @@ public class BaseOwnerService implements OwnerService {
     }
     this.ownerRepository.save(owner);
   }
-
 }

@@ -11,59 +11,77 @@ import javax.validation.constraints.Size;
 @Entity
 public class ApplicationUser {
 
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
+  private Long id;
+  private String firstName;
+  private String lastName;
+  private String email;
+  private String password;
+  private boolean activated;
+  private String activationHash;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
-        return id;
-    }
+  public boolean isActivated() {
+    return activated;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setActivated(boolean activated) {
+    this.activated = activated;
+  }
 
-    @NotNull
-    @Size(min = 2, max = 255, message = "First name should be between 3 and 15 characters long")
-    public String getFirstName() {
-        return firstName;
-    }
+  public String getActivationHash() {
+    return activationHash;
+  }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+  public void setActivationHash(String activationHash) {
+    this.activationHash = activationHash;
+  }
 
-    @NotNull
-    @Size(min = 2, max = 255, message = "Last name should be between 3 and 15 characters long")
-    public String getLastName() {
-        return lastName;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  public Long getId() {
+    return id;
+  }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    @NotNull
-    @Email(message = "Field should contain valid email address")
-    public String getEmail() {
-        return email;
-    }
+  @NotNull
+  @Size(min = 2, max = 255, message = "First name should be between 3 and 15 characters long")
+  public String getFirstName() {
+    return firstName;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-    @NotNull
-    @Size(min = 8, message = "Password should be at least 8 characters long")
-    public String getPassword() {
-        return password;
-    }
+  @NotNull
+  @Size(min = 2, max = 255, message = "Last name should be between 3 and 15 characters long")
+  public String getLastName() {
+    return lastName;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  @NotNull
+  @Email(message = "Field should contain valid email address")
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  @NotNull
+  @Size(min = 8, message = "Password should be at least 8 characters long")
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
 }

@@ -8,8 +8,8 @@ import pl.sda.poznan.spring.petclinic.conversion.ApplicationUserToApplicationUse
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new ApplicationUserToApplicationUserDtoConverter());
-    }
+  @Override
+  public void addFormatters(FormatterRegistry registry) {
+    registry.addConverter(new ApplicationUserToApplicationUserDtoConverter());
+  }
 }

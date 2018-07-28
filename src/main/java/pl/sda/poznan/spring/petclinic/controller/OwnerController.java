@@ -52,6 +52,4 @@ public class OwnerController {
     return ResponseEntity.ok(owner);
   }
 
-
-
 }

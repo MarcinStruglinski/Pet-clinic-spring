@@ -1,5 +1,7 @@
 package pl.sda.poznan.spring.petclinic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -51,6 +53,7 @@ public class Pet {
   }
 
   @ManyToOne
+  @JsonIgnore
   public Owner getOwner() {
     return owner;
   }
